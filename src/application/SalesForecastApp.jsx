@@ -214,10 +214,14 @@ const SalesForecastApp = () => {
   }, [preprocessData, trainModel]);
 
   const handleProductSelect = useCallback((event) => {
-    setSelectedProducts(
-      Array.from(event.target.selectedOptions, (opt) => opt.value)
-    );
-  }, []);
+    const selectedValues = Array.from(event.target.selectedOptions, (opt) => opt.value);
+
+    if (selectedValues.includes("All Products")) {
+      setSelectedProducts([...new Set(forecastData.map(({ product }) => product))]);
+    } else {
+      setSelectedProducts(selectedValues);
+    }
+  }, [forecastData]);
 
   // instead na recalculate tong filtering i use useMemo para minamark niya na ung products
   //check lang kung ung product nandoon sa updated list para un lang kukunin
@@ -232,7 +236,7 @@ const SalesForecastApp = () => {
       <div className="w-full max-w-7xl h-screen overflow-auto bg-slate-800 rounded-2xl shadow-2xl border border-gray-100">
         <header className="px-8 py-6 bg-gradient-to-r from-primary-500 to-primary-600 text-white">
           <h1 className="text-3xl font-extrabold text-center">
-           My Sales Forecast Predictor
+            My Sales Forecast Predictor
           </h1>
         </header>
 
@@ -251,20 +255,22 @@ const SalesForecastApp = () => {
               <select
                 value={selectedProducts}
                 onChange={handleProductSelect}
-                className="px-8 text-center  border rounded-lg p-2 focus:ring-2 focus:ring-primary-900 cursor-pointer"
+                className="px-8 text-center border rounded-lg p-2 focus:ring-2 focus:ring-primary-900 cursor-pointer"
               >
+                <option value="All Products">All Products</option>
                 {[...new Set(forecastData.map(({ product }) => product))].map((product) => (
                   <option key={product} value={product}>
                     {product}
                   </option>
                 ))}
               </select>
+
             )}
           </div>
 
           {filteredForecastData.length > 0 && (
             <>
-              <ResponsiveContainer width="100%" height={400}>
+              <ResponsiveContainer width="100%" height={500}>
                 <LineChart data={filteredForecastData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="month" />

@@ -19,8 +19,7 @@ Importing Csv File:
 Sample illustration of application
 
     - Uploading Interface
-        ![alt text](image-4.png)
-
+        C:\xampp\htdocs\reyes_saleforecasting\sales-forecast\image-4.png
 
     - Main Interface along with Table
         ![alt text](image-3.png)
